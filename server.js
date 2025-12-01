@@ -5,7 +5,11 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Logging middleware
@@ -29,6 +33,17 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 try {
   const swaggerFile = JSON.parse(fs.readFileSync('./swagger.json', 'utf8'));
+  
+  // Update host based on environment
+  if (process.env.RENDER_EXTERNAL_URL) {
+    const renderUrl = new URL(process.env.RENDER_EXTERNAL_URL);
+    swaggerFile.host = renderUrl.host;
+    swaggerFile.schemes = [renderUrl.protocol.replace(':', '')];
+  } else if (process.env.NODE_ENV === 'production') {
+    // For other production deployments
+    swaggerFile.schemes = ['https'];
+  }
+  
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 } catch (e) {
   console.warn('swagger.json not found. Run `npm run swagger` to generate it.');
