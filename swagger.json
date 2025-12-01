@@ -1,0 +1,469 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "EK Salon API",
+    "description": "API for managing salon customers, appointments, services, and barbers",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/appointments/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Appointment information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated appointment information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/barbers/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Barber information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Barber"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/barbers/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated barber information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Barber"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef01"
+        },
+        "barberId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef02"
+        },
+        "serviceId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef03"
+        },
+        "appointmentDate": {
+          "type": "string",
+          "example": "2025-12-05T10:00:00.000Z"
+        },
+        "status": {
+          "type": "string",
+          "example": "scheduled"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Customer prefers morning appointments"
+        }
+      },
+      "required": [
+        "customerId",
+        "barberId",
+        "serviceId",
+        "appointmentDate"
+      ]
+    },
+    "AppointmentResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "692cff00b29f0372734fd0d5"
+        },
+        "customerId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef01"
+        },
+        "barberId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef02"
+        },
+        "serviceId": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef03"
+        },
+        "appointmentDate": {
+          "type": "string",
+          "example": "2025-12-05T10:00:00.000Z"
+        },
+        "status": {
+          "type": "string",
+          "example": "scheduled"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Customer prefers morning appointments"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        }
+      }
+    },
+    "Barber": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "John Smith"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.smith@eksalon.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+1-555-0101"
+        },
+        "specialties": {
+          "type": "array",
+          "example": [
+            "haircut",
+            "beard trim",
+            "shaving"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "monday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "tuesday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "wednesday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "thursday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "friday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "saturday": {
+              "type": "string",
+              "example": "10:00-16:00"
+            }
+          }
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "phone"
+      ]
+    },
+    "BarberResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "692cff3cb29f0372734fd0da"
+        },
+        "name": {
+          "type": "string",
+          "example": "John Smith"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.smith@eksalon.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+1-555-0101"
+        },
+        "specialties": {
+          "type": "array",
+          "example": [
+            "haircut",
+            "beard trim",
+            "shaving"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "monday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "tuesday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "wednesday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "thursday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "friday": {
+              "type": "string",
+              "example": "9:00-17:00"
+            },
+            "saturday": {
+              "type": "string",
+              "example": "10:00-16:00"
+            }
+          }
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": true
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        }
+      }
+    }
+  }
+}
