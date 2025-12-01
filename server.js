@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+// Updated swagger schemas - Dec 1, 2025
 
 // Middleware
 app.use(cors({
