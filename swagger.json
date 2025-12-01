@@ -30,13 +30,10 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Appointment information",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Appointment"
             }
           }
         ],
@@ -84,6 +81,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated appointment information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
           }
         ],
         "responses": {
@@ -142,13 +148,10 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Barber information",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isActive": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Barber"
             }
           }
         ],
@@ -196,6 +199,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated barber information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Barber"
+            }
           }
         ],
         "responses": {
