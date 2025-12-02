@@ -84,6 +84,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated appointment information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
           }
         ],
         "responses": {
@@ -196,6 +205,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated barber information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Barber"
+            }
           }
         ],
         "responses": {
