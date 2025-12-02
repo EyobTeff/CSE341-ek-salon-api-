@@ -45,7 +45,11 @@ try {
     swaggerFile.schemes = ['https'];
   }
   
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    }
+  }));
 } catch (e) {
   console.warn('swagger.json not found. Run `npm run swagger` to generate it.');
 }
