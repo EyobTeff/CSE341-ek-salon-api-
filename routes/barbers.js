@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const barbersController = require('../controllers/barbersController');
 const { validateBarber } = require('../validation/barberValidation');
+const { isAuthenticated } = require('../middleware/auth');
 
 /* #swagger.tags = ['Barbers']
    #swagger.responses[200] = {
@@ -61,7 +62,7 @@ router.get('/:id', barbersController.getBarberById);
      schema: { $ref: '#/definitions/Barber' }
    }
 */
-router.post('/', validateBarber, barbersController.createBarber);
+router.post('/', isAuthenticated, validateBarber, barbersController.createBarber);
 
 /* #swagger.tags = ['Barbers']
    #swagger.parameters['body'] = {
@@ -71,9 +72,9 @@ router.post('/', validateBarber, barbersController.createBarber);
      schema: { $ref: '#/definitions/Barber' }
    }
 */
-router.put('/:id', validateBarber, barbersController.updateBarber);
+router.put('/:id', isAuthenticated, validateBarber, barbersController.updateBarber);
 
 // #swagger.tags = ['Barbers']
-router.delete('/:id', barbersController.deleteBarber);
+router.delete('/:id', isAuthenticated, barbersController.deleteBarber);
 
 module.exports = router;

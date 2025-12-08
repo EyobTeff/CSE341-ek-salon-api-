@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "EK Salon API",
-    "description": "API for managing salon customers, appointments, services, and barbers",
+    "description": "API for managing salon customers, appointments, services, and barbers. Authentication required for POST, PUT, and DELETE operations.",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
@@ -11,7 +11,57 @@
     "http",
     "https"
   ],
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "authorizationUrl": "/auth/github",
+      "flow": "implicit",
+      "scopes": {
+        "user:email": "Access user email"
+      }
+    }
+  },
   "paths": {
+    "/auth/github": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/status": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/appointments/": {
       "get": {
         "description": "",
@@ -46,6 +96,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"
@@ -84,15 +137,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Updated appointment information",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Appointment"
-            }
           }
         ],
         "responses": {
@@ -101,6 +145,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -123,6 +170,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -168,6 +218,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -205,15 +258,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Updated barber information",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Barber"
-            }
           }
         ],
         "responses": {
@@ -222,6 +266,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -244,6 +291,237 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/customers/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/services/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isActive": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/services/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -456,6 +734,148 @@
               "example": "10:00-16:00"
             }
           }
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": true
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jane Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "jane.doe@example.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+1-555-0102"
+        },
+        "address": {
+          "type": "string",
+          "example": "123 Main St, Anytown, USA 12345"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "phone"
+      ]
+    },
+    "CustomerResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef01"
+        },
+        "name": {
+          "type": "string",
+          "example": "Jane Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "jane.doe@example.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+1-555-0102"
+        },
+        "address": {
+          "type": "string",
+          "example": "123 Main St, Anytown, USA 12345"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2025-11-30T08:00:00.000Z"
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Haircut"
+        },
+        "description": {
+          "type": "string",
+          "example": "Professional haircut with styling"
+        },
+        "@duration": {
+          "type": "string",
+          "example": "Duration in minutes"
+        },
+        "duration": {
+          "type": "number",
+          "example": 30
+        },
+        "@price": {
+          "type": "string",
+          "example": "Price in USD ($)"
+        },
+        "price": {
+          "type": "number",
+          "example": 25
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "required": [
+        "name",
+        "duration",
+        "price"
+      ]
+    },
+    "ServiceResponse": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "674b8a1234567890abcdef03"
+        },
+        "name": {
+          "type": "string",
+          "example": "Haircut"
+        },
+        "description": {
+          "type": "string",
+          "example": "Professional haircut with styling"
+        },
+        "@duration": {
+          "type": "string",
+          "example": "Duration in minutes"
+        },
+        "duration": {
+          "type": "number",
+          "example": 30
+        },
+        "@price": {
+          "type": "string",
+          "example": "Price in USD ($)"
+        },
+        "price": {
+          "type": "number",
+          "example": 25
         },
         "isActive": {
           "type": "boolean",

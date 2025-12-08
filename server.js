@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const session = require('express-session');
+const passport = require('./config/passport');
 
 const app = express();
 // Updated swagger schemas - Dec 1, 2025
@@ -9,9 +11,26 @@ const app = express();
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(express.json());
+
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -20,8 +39,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use('/auth', require('./routes/auth'));
 app.use('/appointments', require('./routes/appointments'));
 app.use('/barbers', require('./routes/barbers'));
+app.use('/customers', require('./routes/customers'));
+app.use('/services', require('./routes/services'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -55,4 +77,6 @@ try {
 }
 
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`EK Salon API running on port ${port}`));
+const server = app.listen(port, () => console.log(`EK Salon API running on port ${port}`));
+
+module.exports = { app, server };

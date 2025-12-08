@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const appointmentsController = require('../controllers/appointmentsController');
 const { validateAppointment } = require('../validation/appointmentValidation');
+const { isAuthenticated } = require('../middleware/auth');
 
 /* #swagger.tags = ['Appointments']
    #swagger.responses[200] = {
@@ -47,7 +48,7 @@ router.get('/:id', appointmentsController.getAppointmentById);
      schema: { $ref: '#/definitions/Appointment' }
    }
 */
-router.post('/', validateAppointment, appointmentsController.createAppointment);
+router.post('/', isAuthenticated, validateAppointment, appointmentsController.createAppointment);
 
 /* #swagger.tags = ['Appointments']
    #swagger.parameters['body'] = {
@@ -57,9 +58,9 @@ router.post('/', validateAppointment, appointmentsController.createAppointment);
      schema: { $ref: '#/definitions/Appointment' }
    }
 */
-router.put('/:id', validateAppointment, appointmentsController.updateAppointment);
+router.put('/:id', isAuthenticated, validateAppointment, appointmentsController.updateAppointment);
 
 // #swagger.tags = ['Appointments']
-router.delete('/:id', appointmentsController.deleteAppointment);
+router.delete('/:id', isAuthenticated, appointmentsController.deleteAppointment);
 
 module.exports = router;
