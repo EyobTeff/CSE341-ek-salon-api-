@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test OAuth Authentication</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; font-size: 16px; }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        textarea { width: 100%; height: 200px; font-family: monospace; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>EK Salon API - OAuth Testing</h1>
+    
+    <div>
+        <h2>Step 1: Check Authentication Status</h2>
+        <button onclick="checkStatus()">Check Auth Status</button>
+        <div id="statusResult"></div>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2>Step 2: Login with GitHub</h2>
+        <button onclick="login()">Login with GitHub</button>
+        <p><small>This will redirect you to GitHub for authentication</small></p>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2>Step 3: Test POST Customer (Requires Authentication)</h2>
+        <textarea id="customerData">{
+  "name": "Test Customer OAuth",
+  "email": "testauth@example.com",
+  "phone": "+1-555-9999",
+  "address": "123 OAuth Test St"
+}</textarea>
+        <br>
+        <button onclick="createCustomer()">POST Customer</button>
+        <div id="postResult"></div>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2>Step 4: Test GET Customers (Public - No Auth Required)</h2>
+        <button onclick="getCustomers()">GET All Customers</button>
+        <div id="getResult"></div>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2>Step 5: Logout</h2>
+        <button onclick="logout()">Logout</button>
+        <div id="logoutResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+
+        async function checkStatus() {
+            const resultDiv = document.getElementById('statusResult');
+            try {
+                const response = await fetch(`${API_BASE}/auth/status`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    resultDiv.innerHTML = `<div class="success">
+                        <strong>✓ Authenticated!</strong><br>
+                        Username: ${data.user.username}<br>
+                        Profile: <a href="${data.user.profileUrl}" target="_blank">${data.user.profileUrl}</a>
+                    </div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">
+                        <strong>✗ Not Authenticated</strong><br>
+                        Please login with GitHub first.
+                    </div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        function login() {
+            window.location.href = `${API_BASE}/auth/github`;
+        }
+
+        async function createCustomer() {
+            const resultDiv = document.getElementById('postResult');
+            const customerData = document.getElementById('customerData').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/customers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: customerData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="success">
+                        <strong>✓ Customer Created! (${response.status})</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">
+                        <strong>✗ Failed (${response.status})</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function getCustomers() {
+            const resultDiv = document.getElementById('getResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/customers`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `<div class="success">
+                    <strong>✓ Customers Retrieved (${response.status})</strong>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function logout() {
+            const resultDiv = document.getElementById('logoutResult');
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/logout`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `<div class="success">
+                    <strong>✓ Logged Out</strong>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Check status on page load
+        window.addEventListener('load', checkStatus);
+    </script>
+</body>
+</html>

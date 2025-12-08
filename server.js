@@ -38,6 +38,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve test page
+app.get('/test', (req, res) => {
+  res.sendFile(__dirname + '/test-auth.html');
+});
+
 // Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/appointments', require('./routes/appointments'));
