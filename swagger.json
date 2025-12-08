@@ -80,13 +80,10 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Appointment information",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Appointment"
             }
           }
         ],
@@ -137,6 +134,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Appointment information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
           }
         ],
         "responses": {
@@ -201,13 +207,10 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Barber information",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isActive": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Barber"
             }
           }
         ],
@@ -258,6 +261,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Barber information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Barber"
+            }
           }
         ],
         "responses": {
@@ -318,6 +330,17 @@
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Customer information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -365,6 +388,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Customer information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
           }
         ],
         "responses": {
@@ -429,13 +461,10 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Service information",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isActive": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Service"
             }
           }
         ],
@@ -486,6 +515,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Service information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
           }
         ],
         "responses": {
